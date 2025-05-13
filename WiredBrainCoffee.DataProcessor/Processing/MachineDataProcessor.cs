@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using WiredBrainCoffee.DataProcessor.Model;
 
 namespace WiredBrainCoffee.DataProcessor.Processing
 {
     public class MachineDataProcessor
     {
-        private readonly Dictionary<string, int> _countPerCoffeeType = [];
+        private readonly Dictionary<string, int> _countPerCoffeeType;
+
+        // Constructor que permite especificar una capacidad inicial
+        public MachineDataProcessor(int initialCapacity = 4)
+        {
+            _countPerCoffeeType = new Dictionary<string, int>(initialCapacity);
+        }
 
         public void ProcessItems(MachineDataItem[] dataItems)
         {
@@ -22,14 +29,14 @@ namespace WiredBrainCoffee.DataProcessor.Processing
 
         private void ProcessItem(MachineDataItem dataItem)
         {
-            if (!_countPerCoffeeType.ContainsKey(dataItem.CoffeeType))
-            {
-                _countPerCoffeeType.Add(dataItem.CoffeeType, 1);
-            }
-            else
-            {
-                _countPerCoffeeType[dataItem.CoffeeType]++;
-            }
+            // Obtiene una referencia al valor. Si la clave no existe,
+            // la añade con el valor por defecto para int (0) y devuelve una referencia a ese 0.
+            ref int countRef = ref CollectionsMarshal.GetValueRefOrAddDefault(_countPerCoffeeType, dataItem.CoffeeType, out bool exists);
+
+            // Incrementa el valor directamente a través de la referencia.
+            // Si no existía (exists == false), 0 se convierte en 1.
+            // Si existía, su valor actual se incrementa.
+            countRef++;
         }
 
         private void SaveCountPerCoffeeType()
