@@ -5,15 +5,9 @@ using WiredBrainCoffee.DataProcessor.Model;
 
 namespace WiredBrainCoffee.DataProcessor.Processing
 {
-    public class MachineDataProcessor
+    public class MachineDataProcessor(int initialCapacity = 4)
     {
-        private readonly Dictionary<string, int> _countPerCoffeeType;
-
-        // Constructor que permite especificar una capacidad inicial
-        public MachineDataProcessor(int initialCapacity = 4)
-        {
-            _countPerCoffeeType = new Dictionary<string, int>(initialCapacity);
-        }
+        private readonly Dictionary<string, int> _countPerCoffeeType = new(initialCapacity);
 
         public void ProcessItems(MachineDataItem[] dataItems)
         {
