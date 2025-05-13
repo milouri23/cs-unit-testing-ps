@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using WiredBrainCoffee.DataProcessor.Model;
 
@@ -9,25 +8,27 @@ namespace WiredBrainCoffee.DataProcessor.Parsing
     {
         public static MachineDataItem[] Parse(string[] csvlines)
         {
-            var machineDataItems = new List<MachineDataItem>();
+            var machineDataItems = new MachineDataItem[csvlines.Length];
 
-            foreach (var line in csvlines)
+            for (int i = 0; i < csvlines.Length; i++)
             {
-                var machineDataItem = Parse(line);
-
-                machineDataItems.Add(machineDataItem);
+                var line = csvlines[i];
+                machineDataItems[i] = Parse(line);
             }
 
-            return [.. machineDataItems];
+            return machineDataItems;
         }
 
-        private static MachineDataItem Parse(string csvLine)
+        private static MachineDataItem Parse(ReadOnlySpan<char> csvLine)
         {
-            var lineItems = csvLine.Split(';');
+            int separatorIndex = csvLine.IndexOf(';');
+
+            ReadOnlySpan<char> coffeeTypeSpan = csvLine[..separatorIndex];
+            ReadOnlySpan<char> createdAtSpan = csvLine[(separatorIndex + 1)..];
 
             return new MachineDataItem(
-                coffeeType: lineItems[0],
-                createdAt: DateTime.Parse(lineItems[1], CultureInfo.InvariantCulture)
+                coffeeType: coffeeTypeSpan.ToString(),
+                createdAt: DateTime.Parse(createdAtSpan, CultureInfo.InvariantCulture)
             );
         }
     }
