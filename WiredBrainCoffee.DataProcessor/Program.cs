@@ -10,10 +10,13 @@ Console.WriteLine("---------------------------------------");
 Console.WriteLine();
 
 const string fileName = "CoffeeMachineData.csv";
+string baseDirectory = AppContext.BaseDirectory;
+
+string fullPath = Path.Combine(baseDirectory, fileName);
 
 // Se usa sync ReadAllLines conscientemente: Script simple, único usuario, impacto de bloqueo negligible.
 #pragma warning disable S6966 // Awaitable method should be used
-string[] csvLines = File.ReadAllLines(fileName);
+string[] csvLines = File.ReadAllLines(fullPath);
 #pragma warning restore S6966 // Awaitable method should be used
 
 MachineDataItem[] machineDataItems = CsvLineParser.Parse(csvLines);
