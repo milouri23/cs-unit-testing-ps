@@ -27,8 +27,8 @@ namespace WiredBrainCoffee.DataProcessor.Parsing
             ReadOnlySpan<char> createdAtSpan = csvLine[(separatorIndex + 1)..];
 
             return new MachineDataItem(
-                coffeeType: coffeeTypeSpan.ToString(),
-                createdAt: DateTime.Parse(createdAtSpan, CultureInfo.InvariantCulture)
+                CoffeeType: coffeeTypeSpan.ToString(),
+                CreatedAt: DateTime.Parse(createdAtSpan, CultureInfo.InvariantCulture)
             );
         }
     }
