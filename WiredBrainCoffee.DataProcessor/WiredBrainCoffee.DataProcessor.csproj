@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="CoffeeMachineData.csv">
+    <Content Include="Data\CoffeeMachineData.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>CoffeeMachineData.csv</Link>
     </Content>
   </ItemGroup>
 

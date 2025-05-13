@@ -14,6 +14,17 @@ string baseDirectory = AppContext.BaseDirectory;
 
 string fullPath = Path.Combine(baseDirectory, fileName);
 
+if (!File.Exists(fullPath))
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"Error: No se encontró el archivo de datos en '{fullPath}'.");
+    Console.WriteLine($"Asegúrate de que el archivo exista y esté configurado para copiarse al directorio de salida en el .csproj.");
+    Console.ResetColor();
+    Console.ReadLine();
+
+    return;
+}
+
 // Se usa sync ReadAllLines conscientemente: Script simple, único usuario, impacto de bloqueo negligible.
 #pragma warning disable S6966 // Awaitable method should be used
 string[] csvLines = File.ReadAllLines(fullPath);
