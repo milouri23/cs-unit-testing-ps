@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using WiredBrainCoffee.DataProcessor.Model;
 
 namespace WiredBrainCoffee.DataProcessor.Processing
@@ -35,11 +36,17 @@ namespace WiredBrainCoffee.DataProcessor.Processing
 
         private void SaveCountPerCoffeeType()
         {
+            var stringBuilder = new StringBuilder();
+
             foreach (var entry in _countPerCoffeeType)
             {
-                var line = $"{entry.Key}:{entry.Value}";
-                Console.WriteLine(line);
+                stringBuilder.Append(entry.Key);
+                stringBuilder.Append(':');
+                stringBuilder.Append(entry.Value);
+                stringBuilder.AppendLine();
             }
+
+            Console.WriteLine(stringBuilder);
         }
     }
 }
