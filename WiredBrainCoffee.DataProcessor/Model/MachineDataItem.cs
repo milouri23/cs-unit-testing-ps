@@ -2,15 +2,9 @@
 
 namespace WiredBrainCoffee.DataProcessor.Model
 {
-    public class MachineDataItem
+    public class MachineDataItem(string coffeeType, DateTime createdAt)
     {
-        public string CoffeeType { get; set; }
-        public DateTime CreatedAt { get; set; }
-
-        public MachineDataItem(string coffeeType, DateTime createdAt)
-        {
-            CoffeeType = coffeeType;
-            CreatedAt = createdAt;
-        }
+        public string CoffeeType { get; } = coffeeType;
+        public DateTime CreatedAt { get; } = createdAt;
     }
 }
