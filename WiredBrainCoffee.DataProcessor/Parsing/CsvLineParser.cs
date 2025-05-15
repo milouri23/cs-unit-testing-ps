@@ -41,6 +41,11 @@ public static class CsvLineParser
     {
         int separatorIndex = csvLine.IndexOf(';');
 
+        if (separatorIndex == -1)
+        {
+            throw new Exception();
+        }
+
         ReadOnlySpan<char> coffeeTypeSpan = csvLine[..separatorIndex].Trim();
         ReadOnlySpan<char> createdAtSpan = csvLine[(separatorIndex + 1)..].Trim();
 
