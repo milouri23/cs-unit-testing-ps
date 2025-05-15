@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WiredBrainCoffee.DataProcessor.Model
+﻿namespace WiredBrainCoffee.DataProcessor.Model
 {
     public record MachineDataItem(string CoffeeType, DateTime CreatedAt);
 }

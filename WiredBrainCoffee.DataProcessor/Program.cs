@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using WiredBrainCoffee.DataProcessor.Model;
+﻿using WiredBrainCoffee.DataProcessor.Model;
 using WiredBrainCoffee.DataProcessor.Parsing;
 using WiredBrainCoffee.DataProcessor.Processing;
 
