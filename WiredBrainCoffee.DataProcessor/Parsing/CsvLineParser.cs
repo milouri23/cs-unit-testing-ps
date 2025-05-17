@@ -43,15 +43,26 @@ public static class CsvLineParser
 
         if (separatorIndex == -1)
         {
-            throw new Exception();
+            throw new Exception($"Invalid csv line: Missing separator in: {csvLine}");
+        }
+
+        ReadOnlySpan<char> createdAtSpan = csvLine[(separatorIndex + 1)..].Trim();
+
+        if (createdAtSpan.IndexOf(';') != -1)
+        {
+            throw new Exception($"Invalid csv line: Multiple separator in: {csvLine}");
         }
 
         ReadOnlySpan<char> coffeeTypeSpan = csvLine[..separatorIndex].Trim();
-        ReadOnlySpan<char> createdAtSpan = csvLine[(separatorIndex + 1)..].Trim();
+
+        if (!DateTime.TryParse(createdAtSpan, CultureInfo.InvariantCulture, out DateTime createdAt))
+        {
+            throw new Exception($"Invalid datetime in csv line: {csvLine}");
+        }
 
         return new MachineDataItem(
             CoffeeType: coffeeTypeSpan.ToString(),
-            CreatedAt: DateTime.Parse(createdAtSpan, CultureInfo.InvariantCulture)
+            CreatedAt: createdAt
         );
     }
 }

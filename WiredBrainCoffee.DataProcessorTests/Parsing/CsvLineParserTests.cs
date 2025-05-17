@@ -28,11 +28,16 @@ public class CsvLineParserTests
         Assert.Empty(machineDataItems);
     }
 
-    [Fact]
-    public void ShouldThrowExceptionForInvalidLIne()
+    [InlineData("Cappuccino", "Invalid csv line: Missing separator in")]
+    [InlineData("Cappuccino;10/27/2022 8:06:04 AM;Friday", "Invalid csv line: Multiple separator in")]
+    [InlineData("Cappuccino;InvalidDateTime", "Invalid datetime in csv line")]
+    [Theory]
+    public void ShouldThrowExceptionForInvalidLine(string csvLine, string expectedMessagePrefix)
     {
-        string[] csvLines = ["Capuccino"];
+        string[] csvLines = [csvLine];
 
-        Assert.Throws<Exception>(() => CsvLineParser.Parse(csvLines));
+        var exception = Assert.Throws<Exception>(() => CsvLineParser.Parse(csvLines));
+
+        Assert.Equal($"{expectedMessagePrefix}: {csvLine}", exception.Message);
     }
 }
