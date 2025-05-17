@@ -1,4 +1,5 @@
-﻿using WiredBrainCoffee.DataProcessor.Model;
+﻿using WiredBrainCoffee.DataProcessor.Data;
+using WiredBrainCoffee.DataProcessor.Model;
 using WiredBrainCoffee.DataProcessor.Parsing;
 using WiredBrainCoffee.DataProcessor.Processing;
 
@@ -30,7 +31,7 @@ string[] csvLines = File.ReadAllLines(fullPath);
 
 MachineDataItem[] machineDataItems = CsvLineParser.Parse(csvLines);
 
-var machineDataProcessor = new MachineDataProcessor();
+var machineDataProcessor = new MachineDataProcessor(new ConsoleCoffeeCountStore());
 machineDataProcessor.ProcessItems(machineDataItems);
 
 Console.WriteLine();

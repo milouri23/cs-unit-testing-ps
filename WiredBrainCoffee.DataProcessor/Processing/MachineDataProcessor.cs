@@ -1,12 +1,14 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
+using WiredBrainCoffee.DataProcessor.Data;
 using WiredBrainCoffee.DataProcessor.Model;
 
 namespace WiredBrainCoffee.DataProcessor.Processing;
 
-public class MachineDataProcessor(int initialCapacity = 4)
+public class MachineDataProcessor(ICoffeeCountStore coffeeCountStore, int initialCapacity = 4)
 {
-    private readonly Dictionary<string, int> _countPerCoffeeType = new(initialCapacity);
+    private readonly Dictionary<string, int> _countPerCoffeeType = new Dictionary<string, int>(initialCapacity);
+    private ICoffeeCountStore _coffeeCountStore = coffeeCountStore;
 
     public void ProcessItems(MachineDataItem[] dataItems)
     {
@@ -34,16 +36,9 @@ public class MachineDataProcessor(int initialCapacity = 4)
 
     private void SaveCountPerCoffeeType()
     {
-        var stringBuilder = new StringBuilder();
-
         foreach (var entry in _countPerCoffeeType)
         {
-            stringBuilder.Append(entry.Key);
-            stringBuilder.Append(':');
-            stringBuilder.Append(entry.Value);
-            stringBuilder.AppendLine();
+            _coffeeCountStore.Save(new CoffeeCountItem(entry.Key, entry.Value));
         }
-
-        Console.WriteLine(stringBuilder);
     }
 }
