@@ -59,7 +59,7 @@ public static class CsvLineParser
 
         if (!DateTime.TryParse(createdAtSpan, CultureInfo.InvariantCulture, out DateTime createdAt))
         {
-            throw new Exception($"Invalid datetime: {csvLine}");
+            throw new Exception($"Invalid datetime in csv line: {csvLine}");
         }
 #pragma warning restore S112 // 'System.Exception' should not be thrown
 
