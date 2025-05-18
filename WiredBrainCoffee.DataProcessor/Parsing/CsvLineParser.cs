@@ -41,6 +41,8 @@ public static class CsvLineParser
     {
         int separatorIndex = csvLine.IndexOf(';');
 
+        // Se lanza System.Exception por simplicidad, propósitos demostrativos y porque es un proyecto de aprendizaje
+#pragma warning disable S112 // 'System.Exception' should not be thrown
         if (separatorIndex == -1)
         {
             throw new Exception($"Invalid csv line: Missing separator in: {csvLine}");
@@ -57,8 +59,9 @@ public static class CsvLineParser
 
         if (!DateTime.TryParse(createdAtSpan, CultureInfo.InvariantCulture, out DateTime createdAt))
         {
-            throw new Exception($"Invalid datetime in csv line: {csvLine}");
+            throw new Exception($"Invalid datetime: {csvLine}");
         }
+#pragma warning restore S112 // 'System.Exception' should not be thrown
 
         return new MachineDataItem(
             CoffeeType: coffeeTypeSpan.ToString(),
