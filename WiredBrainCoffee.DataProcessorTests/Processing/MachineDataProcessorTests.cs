@@ -25,13 +25,13 @@ public class MachineDataProcessorTests : IDisposable
 
         _machineDataProcessor.ProcessItems(items);
 
-        Assert.Equal(2, this._coffeeCountStore.SavedItems.Count);
+        Assert.Equal(2, _coffeeCountStore.SavedItems.Count);
 
-        var item = this._coffeeCountStore.SavedItems[0];
+        var item = _coffeeCountStore.SavedItems[0];
         Assert.Equal("Cappuccino", item.CoffeeType);
         Assert.Equal(2, item.Count);
 
-        item = this._coffeeCountStore.SavedItems[1];
+        item = _coffeeCountStore.SavedItems[1];
         Assert.Equal("Espresso", item.CoffeeType);
         Assert.Equal(1, item.Count);
     }
@@ -46,12 +46,37 @@ public class MachineDataProcessorTests : IDisposable
         _machineDataProcessor.ProcessItems(items);
         _machineDataProcessor.ProcessItems(items);
 
-        Assert.Equal(2, this._coffeeCountStore.SavedItems.Count);
-        foreach (var item in this._coffeeCountStore.SavedItems)
+        Assert.Equal(2, _coffeeCountStore.SavedItems.Count);
+        foreach (var item in _coffeeCountStore.SavedItems)
         {
             Assert.Equal("Cappuccino", item.CoffeeType);
             Assert.Equal(1, item.Count);
         }
+    }
+
+    [Fact]
+    public void ShouldIgnoreItemsThatAreNotNewer()
+    {
+        MachineDataItem[] items = [
+            new("Cappuccino", new DateTime(2022,10,27,8,0,0,DateTimeKind.Unspecified)),
+            new("Cappuccino", new DateTime(2022,10,27,7,0,0,DateTimeKind.Unspecified)),
+            new("Cappuccino", new DateTime(2022,10,27,7,10,0,DateTimeKind.Unspecified)),
+            new("Cappuccino", new DateTime(2022,10,27,9,0,0,DateTimeKind.Unspecified)),
+            new("Espresso", new DateTime(2022,10,27,10,0,0,DateTimeKind.Unspecified)),
+            new("Espresso", new DateTime(2022,10,27,10,0,0,DateTimeKind.Unspecified))
+        ];
+
+        _machineDataProcessor.ProcessItems(items);
+
+        Assert.Equal(2, _coffeeCountStore.SavedItems.Count);
+
+        var item = _coffeeCountStore.SavedItems[0];
+        Assert.Equal("Cappuccino", item.CoffeeType);
+        Assert.Equal(2, item.Count);
+
+        item = _coffeeCountStore.SavedItems[1];
+        Assert.Equal("Espresso", item.CoffeeType);
+        Assert.Equal(1, item.Count);
     }
 
     public void Dispose()
